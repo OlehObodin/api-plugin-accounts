@@ -17,6 +17,8 @@ import updateAccountAddressBookEntry from "./updateAccountAddressBookEntry.js";
 import updateAccountGroup from "./updateAccountGroup.js";
 import updateAdminUIAccess from "./updateAdminUIAccess.js";
 import updateGroupsForAccounts from "./updateGroupsForAccounts.js";
+import sendVerifyAccountEmail from "./sendVerifyAccountEmail.js";
+import verifyJsonToken from "./verifyJsonToken.js";
 
 export default {
   addAccountAddressBookEntry,
@@ -37,5 +39,7 @@ export default {
   updateAccountAddressBookEntry,
   updateAccountGroup,
   updateAdminUIAccess,
-  updateGroupsForAccounts
+  updateGroupsForAccounts,
+  sendVerifyAccountEmail,
+  verifyJsonToken
 };

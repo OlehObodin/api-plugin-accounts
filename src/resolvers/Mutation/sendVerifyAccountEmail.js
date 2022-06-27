@@ -1,5 +1,5 @@
 /**
- * @name Mutation/sendResetAccountPasswordEmail
+ * @name Mutation/sendVerifyAccountEmail
  * @summary resolver for the sendResetAccountPasswordEmail GraphQL mutation
  * @param {Object} _ - unused
  * @param {Object} args.input - an object of all mutation arguments that were sent by the client
@@ -8,15 +8,15 @@
  * @param {Object} context - an object containing the per-request state
  * @returns {Object} r=sendResetAccountPasswordEmailPayload
  */
-export default async function sendResetAccountPasswordEmail(_, { input }, context) {
-  const { email, clientMutationId = null } = input;
-
-  const emailAddress = await context.mutations.sendResetAccountPasswordEmail(context, {
-    email
-  });
-
-  return {
-    email: emailAddress,
-    clientMutationId
-  };
-}
+ export default async function sendVerifyAccountEmail(_, { input }, context) {
+    const { email,url, clientMutationId = null } = input;
+    const emailAddress = await context.mutations.sendVerifyAccountEmail(context, {
+      email,
+      url
+    });
+  
+    return {
+      email: emailAddress,
+      clientMutationId
+    };
+  }

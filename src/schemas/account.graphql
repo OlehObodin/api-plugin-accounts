@@ -97,6 +97,28 @@ input SendResetAccountPasswordEmailInput {
   email: String!
 }
 
+"Describes which email should be sent a password reset link"
+input SendVerifyAccountEmailInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "The email address of the account to send reset email to"
+  email: String!,
+  
+  "The domain url of the verify page"
+  url: String!,
+}
+
+"Send token from email page verification to verify"
+input VerifyJsonTokenInput {
+  "Email for update the value to verify"
+  email: String!,
+
+  "Token for check verification by jwtwebtoken"
+  token: String!,
+}
+
+
 "Describes an account update"
 input UpdateAccountInput {
   "The account ID, which defaults to the viewer account"
@@ -374,6 +396,26 @@ type SendResetAccountPasswordEmailPayload {
   email: String!
 }
 
+
+"The response from the `sendVerifyAccountEmail` mutation"
+type SendVerifyAccountEmailPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "The email address of the account to send reset email to"
+  email: String!
+}
+
+"The response from the `verifyJsonToken` mutation"
+type verifyJsonTokenPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String,
+  "Error or success message of emal verification"
+  message: String,
+  "Is email verified"
+  verified: Boolean!
+}
+
 "The response from the `removeAccountAddressBookEntry` mutation"
 type RemoveAccountAddressBookEntryPayload {
   "The removed address"
@@ -463,6 +505,18 @@ extend type Mutation {
     "Mutation input"
     input: SendResetAccountPasswordEmailInput!
   ): SendResetAccountPasswordEmailPayload
+
+  "Send verify account by email address"
+  sendVerifyAccountEmail(
+    "Mutation input"
+    input: SendVerifyAccountEmailInput!
+  ): SendVerifyAccountEmailPayload
+
+  "Verify json token by jwtwebtoken"
+  verifyJsonToken(
+    "Mutation input"
+    input: VerifyJsonTokenInput!
+  ): verifyJsonTokenPayload
 
   "Set default email address for an account"
   setAccountDefaultEmail(

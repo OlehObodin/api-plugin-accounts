@@ -10,20 +10,23 @@ const { REACTION_IDENTITY_PUBLIC_VERIFY_EMAIL_URL } = config;
  * @param {Object} context Startup context
  * @param {Object} input Input options
  * @param {String} input.userId - The id of the user to send email to.
+ * @param {String} input.url - Url to verification page
  * @param {String} [input.bodyTemplate] Template name for rendering the email body
  * @returns {Job} - returns a sendEmail Job instance
  */
-export default async function sendVerificationEmail(context, { bodyTemplate = "accounts/verifyEmail", userId }) {
+export default async function sendVerificationEmail(context, { bodyTemplate = "accounts/verifyEmail", userId, url }) {
   const {
     collections: { Accounts, Shops },
     mutations: { startIdentityEmailVerification }
   } = context;
 
   if (typeof startIdentityEmailVerification !== "function") {
-    throw new ReactionError("not-supported", "Password reset not supported");
+    throw new ReactionError("not-supported", "Verification not supported");
   }
 
   const { email, token } = await startIdentityEmailVerification(context, { userId });
+
+  console.log(email, 'EMAIL');
 
   const account = await Accounts.findOne({ userId });
   if (!account) throw new ReactionError("not-found", "Account not found");
@@ -46,7 +49,7 @@ export default async function sendVerificationEmail(context, { bodyTemplate = "a
       postal: _.get(shop, "addressBook[0].postal")
     },
     shopName: shop.name,
-    confirmationUrl: REACTION_IDENTITY_PUBLIC_VERIFY_EMAIL_URL.replace("TOKEN", token),
+    confirmationUrl: `${url}/verify/${token}`,
     userEmailAddress: email
   };
 
